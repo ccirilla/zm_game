@@ -93,6 +93,26 @@ func GetHealthInfo() map[string]interface{}{
 	return ret
 }
 
+func GetAllDevices() []Device{
+	ret := []Device{}
+	m_device.Lock()
+	for _, val := range devices{
+		ret = append(ret, val)
+	}
+	m_device.Unlock()
+	return ret
+}
+
+func GetDidDevices(did int) Device{
+	if did > DeviceNum{
+		return Device{}
+	}
+	m_device.Lock()
+	ret := devices[did]
+	m_device.Unlock()
+	return ret
+}
+
 func InitDevice(device *Device) {
 	device.Tasks = []string{"挂机1", "挂机2", "金砖", "Over"}
 	device.Mark = strconv.FormatInt(time.Now().Unix(), 10)
@@ -111,6 +131,7 @@ func InitDevice(device *Device) {
 	device.Level2Step.IncMoney = 0
 	device.Level2Step.RoleLevel = 0
 	device.LastActive = 0
+	device.Host = "A"
 }
 
 func InitDevices(devices []Device) {

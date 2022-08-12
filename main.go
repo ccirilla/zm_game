@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -64,6 +65,23 @@ func ReportHeart(c *gin.Context) {
 func GetHealth(c *gin.Context) {
 	data := GetHealthInfo()
 
+	c.JSON(200, gin.H{
+		"Status": "OK",
+		"Data":   data,
+	})
+}
+
+func GetDevice(c *gin.Context) {
+	param := c.Query("param")
+	params := strings.Split(param, "-")
+	var data interface{}
+
+	if params[0] == "getall"{
+		data = GetAllDevices()
+	}else{
+		did, _ := strconv.Atoi(params[1])
+		data = GetDidDevices(did)
+	}
 	c.JSON(200, gin.H{
 		"Status": "OK",
 		"Data":   data,
