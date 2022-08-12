@@ -13,6 +13,8 @@ func init() {
 	InitALlDevice()
 }
 
+
+
 func main() {
 
 	router := gin.Default()

@@ -3,6 +3,8 @@ package main
 import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"log"
+	"os"
 	"sync"
 	"time"
 )
@@ -40,6 +42,32 @@ var base_db *gorm.DB
 var roles []RoleBaseInfoXc
 var m_role sync.Mutex
 
+var (
+	SLogger *log.Logger
+	FLogger *log.Logger
+	ELogger *log.Logger
+)
+
+func initLog() {
+	sfile, err := os.OpenFile("success.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+	ffile, err := os.OpenFile("false.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+	efile, err := os.OpenFile("event.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	SLogger = log.New(sfile, "", log.Ldate|log.Ltime)
+	FLogger = log.New(ffile, "", log.Ldate|log.Ltime)
+	ELogger = log.New(efile, "", log.Ldate|log.Ltime)
+}
+
+
 func InitRoleInfo() {
 	base_db.Limit(AccountsNum).Find(&roles)
 }
@@ -52,6 +80,8 @@ func DbInit() {
 		println(err)
 		panic(err)
 	}
+	initLog()
 	//db.AutoMigrate(&RawAccountUsing{})
 	InitRoleInfo()
+
 }
