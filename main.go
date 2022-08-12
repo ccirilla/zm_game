@@ -22,6 +22,7 @@ func main() {
 	router.GET("/GetAccount", GetAccount)
 	router.GET("/ReportHeart", ReportHeart)
 	router.GET("/GetHealth", GetHealth)
+	router.GET("/GetDevice", GetDevice)
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
