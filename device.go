@@ -93,11 +93,13 @@ func GetHealthInfo() map[string]interface{}{
 	return ret
 }
 
-func GetAllDevices() []Device{
+func GetAllDevices(host string) []Device{
 	ret := []Device{}
 	m_device.Lock()
 	for _, val := range devices{
-		ret = append(ret, val)
+		if val.Host == host{
+			ret = append(ret, val)
+		}
 	}
 	m_device.Unlock()
 	return ret

@@ -77,7 +77,7 @@ func GetDevice(c *gin.Context) {
 	var data interface{}
 
 	if params[0] == "getall"{
-		data = GetAllDevices()
+		data = GetAllDevices(params[1])
 	}else{
 		did, _ := strconv.Atoi(params[1])
 		data = GetDidDevices(did)
