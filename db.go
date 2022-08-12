@@ -49,15 +49,15 @@ var (
 )
 
 func initLog() {
-	sfile, err := os.OpenFile("success.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	sfile, err := os.OpenFile("./log/success.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
-	ffile, err := os.OpenFile("false.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	ffile, err := os.OpenFile("./log/false.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
-	efile, err := os.OpenFile("event.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	efile, err := os.OpenFile("./log/event.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}

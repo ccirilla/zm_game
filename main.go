@@ -47,7 +47,6 @@ func ReportHeart(c *gin.Context) {
 	var val = Device{}
 	json.Unmarshal([]byte(param), &val)
 	val.LastActive = int(time.Now().Unix())
-	ELogger.Printf("      %+v", val)
 	data := UpdateDeviceInfo(&val)
 	if data == nil {
 		c.JSON(200, gin.H{

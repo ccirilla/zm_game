@@ -74,8 +74,6 @@ func GetHealthInfo() map[string]interface{}{
 	farr := []map[string]int{}
 	m_device.Lock()
 	for _, val := range devices{
-		ELogger.Printf("%+v", val)
-		ELogger.Println(t - int64(val.LastActive))
 		if val.LastActive == 0 || t - int64(val.LastActive) < int64(ActiveOverTime){
 			up_cnt++;
 		}else{
