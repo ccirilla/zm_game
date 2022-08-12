@@ -34,6 +34,8 @@ type Device struct {
 	Level2Step  Level2Step `json:"Level2Step"`
 	IncAllGold  int        `json:"IncAllGold"`
 	IncAllMoney int        `json:"IncAllMoney"`
+	Host        string     `json:"Host"`
+	LastActive  int        `json:"LastActive"`
 }
 
 func CopyData(old *Device, new *Device){
@@ -61,6 +63,32 @@ func UpdateDeviceInfo(device *Device) *Device {
 	return nil
 }
 
+func GetHealthInfo() map[string]interface{}{
+	var up_cnt = 0
+	var down_cnt = 0
+	var t = time.Now().Unix()
+	farr := []map[string]int{}
+	m_device.Lock()
+	for _, val := range devices{
+		if val.LastActive == 0 || t - int64(val.LastActive) < int64(ActiveOverTime){
+			up_cnt++;
+		}else{
+			down_cnt++;
+			tmp := map[string]int{
+				"Did" : val.Did,
+				"OverTime" : (int(t) - val.LastActive) / 60,
+			}
+			farr = append(farr, tmp)
+		}
+	}
+	m_device.Unlock()
+	ret := make(map[string]interface{})
+	ret["UP"] = up_cnt
+	ret["Down"] = down_cnt
+	ret["DownDids"] = farr
+	return ret
+}
+
 func InitDevice(device *Device) {
 	device.Tasks = []string{"挂机1", "挂机2", "金砖", "Over"}
 	device.Mark = strconv.FormatInt(time.Now().Unix(), 10)
@@ -78,6 +106,7 @@ func InitDevice(device *Device) {
 	device.Level2Step.IncGold = 0
 	device.Level2Step.IncMoney = 0
 	device.Level2Step.RoleLevel = 0
+	device.LastActive = 0
 }
 
 func InitDevices(devices []Device) {
@@ -88,6 +117,6 @@ func InitDevices(devices []Device) {
 }
 
 func InitALlDevice() {
-	devices = make([]Device, DeviceNum)
+	devices = make([]Device, DeviceNum+1)
 	InitDevices(devices)
 }
