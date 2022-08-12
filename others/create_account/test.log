@@ -1,0 +1,32 @@
+nohup: ignoring input
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /GetAccount               --> main.GetAccount (3 handlers)
+[GIN-debug] GET    /ReportInfo               --> main.ReportInfo (3 handlers)
+[GIN-debug] GET    /ping                     --> main.main.func1 (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2022/08/12 - 13:17:29 | 200 |   19.191145ms |  123.123.46.157 | GET      "/GetAccount"
+[GIN] 2022/08/12 - 13:21:59 | 200 |   19.020907ms |   43.142.162.38 | GET      "/GetAccount"
+[GIN] 2022/08/12 - 14:06:46 | 404 |         361ns |     65.49.20.68 | GET      "/"
+[GIN] 2022/08/12 - 14:12:01 | 404 |         404ns |   43.142.162.38 | GET      "/"
+[mysql] 2022/08/12 14:29:46 packets.go:123: closing bad idle connection: EOF
+[GIN] 2022/08/12 - 14:29:46 | 200 |   48.599222ms |  123.123.46.157 | GET      "/ReportInfo?data={\"Ret\":0,\"Did\":0,\"Common\":{\"Password\":\"18sphlsw\",\"StartTime\":\"08%E6%9C%8812%E6%97%A5-13:17\",\"Atk\":2648,\"Gold\":0,\"UseTime\":72.285666666667,\"Money\":11660,\"KillSum\":522,\"Def\":1006,\"Level\":28,\"RestEx\":558,\"Did\":0,\"Account\":\"zzoouiuihbfh\",\"Id\":\"58246\"},\"Success\":{\"Up28\":14.149683333333,\"Up20\":17.40985,\"Up15\":4.6633666666667,\"Up24\":10.34275,\"Attack\":25.1375}}"
+[GIN] 2022/08/12 - 14:29:46 | 200 |   17.491471ms |  123.123.46.157 | GET      "/GetAccount"
+[GIN] 2022/08/12 - 14:47:12 | 404 |         421ns |   46.174.191.28 | GET      "/"
+[GIN] 2022/08/12 - 15:04:31 | 404 |         788ns |   45.61.184.166 | GET      "/"
+[GIN] 2022/08/12 - 15:04:34 | 404 |         511ns |   45.61.184.166 | CONNECT  ""
+[mysql] 2022/08/12 15:37:29 packets.go:123: closing bad idle connection: EOF
+[GIN] 2022/08/12 - 15:37:29 | 200 |   41.760878ms |  123.123.46.157 | GET      "/ReportInfo?data={\"Ret\":0,\"Did\":0,\"Common\":{\"Password\":\"zcye5s8\",\"StartTime\":\"08%E6%9C%8812%E6%97%A5-14:29\",\"Atk\":2942,\"Gold\":0,\"UseTime\":67.710966666667,\"Money\":11632,\"KillSum\":522,\"Def\":758,\"Level\":29,\"RestEx\":43795,\"Did\":0,\"Account\":\"49lo0ruolbl2\",\"Id\":\"58247\"},\"Success\":{\"Up28\":14.184316666667,\"Up20\":16.866116666667,\"Up15\":4.5955,\"Up24\":10.31785,\"Attack\":21.3724}}"
+[GIN] 2022/08/12 - 15:37:29 | 200 |   16.321841ms |  123.123.46.157 | GET      "/GetAccount"
+[GIN] 2022/08/12 - 15:51:54 | 404 |         690ns |   78.108.177.51 | GET      "/"
+[GIN] 2022/08/12 - 15:52:56 | 404 |         443ns |   138.68.76.244 | GET      "/"
+[mysql] 2022/08/12 16:48:23 packets.go:123: closing bad idle connection: EOF
+[GIN] 2022/08/12 - 16:48:23 | 200 |   45.631842ms |  123.123.46.157 | GET      "/ReportInfo?data={\"Ret\":0,\"Did\":0,\"Common\":{\"Password\":\"tje0p6\",\"StartTime\":\"08%E6%9C%8812%E6%97%A5-15:37\",\"Atk\":2648,\"Gold\":0,\"UseTime\":70.90765,\"Money\":10483,\"KillSum\":525,\"Def\":756,\"Level\":28,\"RestEx\":2582,\"Did\":0,\"Account\":\"vbaqoo78oaa\",\"Id\":\"58248\"},\"Success\":{\"Up28\":14.005816666667,\"Up20\":18.921633333333,\"Up15\":4.5545,\"Up24\":10.687216666667,\"Attack\":22.36375}}"
+[GIN] 2022/08/12 - 16:48:23 | 200 |   13.648184ms |  123.123.46.157 | GET      "/GetAccount"
