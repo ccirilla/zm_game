@@ -39,11 +39,15 @@ type Device struct {
 }
 
 func CopyData(old *Device, new *Device){
+	*old = *new
+	/*
 	old.IncAllMoney = new.IncAllMoney
 	old.IncAllGold = new.IncAllGold
 	old.HotJob = new.HotJob
 	old.Level1Step = new.Level1Step
 	old.Level2Step = new.Level2Step
+	*
+	 */
 }
 
 func UpdateDeviceInfo(device *Device) *Device {
