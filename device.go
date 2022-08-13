@@ -55,6 +55,7 @@ func UpdateDeviceInfo(device *Device) *Device {
 		return nil
 	}
 	m_device.Lock()
+	devices[device.Did].Host = device.Host
 	sys_device := devices[device.Did]
 	m_device.Unlock()
 
