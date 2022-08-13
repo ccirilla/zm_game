@@ -12,6 +12,7 @@ import (
 func init() {
 	DbInit()
 	InitALlDevice()
+	go DocSyncTaskCronJob()
 }
 
 func main() {

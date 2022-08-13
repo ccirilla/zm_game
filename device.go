@@ -121,6 +121,8 @@ func SetAllDevices(op string, param []string) {
 	for i := 0; i < len(devices); i++ {
 		if op == "task" {
 			devices[i].Tasks = param
+			devices[i].Level1Step.CurIndex = 0
+			devices[i].Level1Step.SubIndex = 0
 			devices[i].Mark = strconv.FormatInt(time.Now().Unix(), 10)
 		} else if op == "hot" {
 			devices[i].HotJob = param[0]
@@ -138,6 +140,8 @@ func SetHostDevices(host string, op string, param []string) {
 		}
 		if op == "task" {
 			devices[i].Tasks = param
+			devices[i].Level1Step.CurIndex = 0
+			devices[i].Level1Step.SubIndex = 0
 			devices[i].Mark = strconv.FormatInt(time.Now().Unix(), 10)
 		} else if op == "hot" {
 			devices[i].HotJob = param[0]
@@ -155,6 +159,8 @@ func SetDidDevices(did int, op string, param []string) {
 
 	if op == "task" {
 		devices[did].Tasks = param
+		devices[did].Level1Step.CurIndex = 0
+		devices[did].Level1Step.SubIndex = 0
 		devices[did].Mark = strconv.FormatInt(time.Now().Unix(), 10)
 	} else if op == "hot" {
 		devices[did].HotJob = param[0]
@@ -180,18 +186,29 @@ func InitDevice(device *Device) {
 	device.Level2Step.IncGold = 0
 	device.Level2Step.IncMoney = 0
 	device.Level2Step.RoleLevel = 0
-	device.LastActive = 0
-	device.Host = "A"
+	//device.LastActive = 0
+	//device.Host = "A"
 }
 
 func InitDevices(devices []Device) {
 	for i := 0; i < DeviceNum; i++ {
 		InitDevice(&devices[i])
 		devices[i].Did = i
+		devices[i].Host = "A"
+		devices[i].LastActive = 0
 	}
 }
 
 func InitALlDevice() {
 	devices = make([]Device, DeviceNum+1)
 	InitDevices(devices)
+}
+
+func SyncAllDevice()  {
+	m_device.Lock()
+	for i := 0; i < DeviceNum; i++ {
+		InitDevice(&devices[i])
+		devices[i].Tasks = []string{"挂机", "挂机", "刷怪", "Over"}
+	}
+	m_device.Unlock()
 }
