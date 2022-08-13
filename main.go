@@ -91,15 +91,15 @@ func GetDevice(c *gin.Context) {
 func SetDevice(c *gin.Context) {
 	param := c.Query("param")
 	params := strings.Split(param, "-")
-	vals := append(params[2:], "Over")
+	vals := append(params, "Over")
 
 	if params[1] == "host" {
-		SetHostDevices(params[1], params[0], vals)
+		SetHostDevices(params[2], params[0], vals[3:])
 	} else if params[1] == "did" {
-		did, _ := strconv.Atoi(params[1])
-		SetDidDevices(did, params[0], vals)
+		did, _ := strconv.Atoi(params[2])
+		SetDidDevices(did, params[0], vals[3:])
 	} else if params[1] == "all" {
-		SetAllDevices(params[0], vals)
+		SetAllDevices(params[0], vals[2:])
 	}
 	c.JSON(200, gin.H{
 		"Status": "OK",
