@@ -170,7 +170,7 @@ func SetDidDevices(did int, op string, param []string) {
 }
 
 func InitDevice(device *Device) {
-	device.Tasks = []string{"挂机", "挂机", "金砖", "Over"}
+	device.Tasks = []string{"挂机", "挂机", "刷怪", "Over"}
 	device.Mark = strconv.FormatInt(time.Now().Unix(), 10)
 	device.HotJob = "NULL"
 	device.IncAllGold = 0
