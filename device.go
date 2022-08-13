@@ -115,8 +115,49 @@ func GetDidDevices(did int) Device{
 	return ret
 }
 
+func SetAllDevices(op string, param []string) {
+	m_device.Lock()
+	for _, val := range devices{
+		if op == "task"{
+			val.Tasks = param
+		}else if op == "hot"{
+			val.HotJob = param[0]
+		}
+	}
+	m_device.Unlock()
+}
+
+func SetHostDevices(host string, op string, param []string) {
+	m_device.Lock()
+	for _, val := range devices{
+		if val.Host != host {
+			continue
+		}
+		if op == "task"{
+			val.Tasks = param
+		}else if op == "hot"{
+			val.HotJob = param[0]
+		}
+	}
+	m_device.Unlock()
+}
+
+func SetDidDevices(did int, op string, param []string) {
+	if did > DeviceNum{
+		return
+	}
+	m_device.Lock()
+
+		if op == "task"{
+			devices[did].Tasks = param
+		}else if op == "hot" {
+			devices[did].HotJob = param[0]
+		}
+	m_device.Unlock()
+}
+
 func InitDevice(device *Device) {
-	device.Tasks = []string{"挂机1", "挂机2", "金砖", "Over"}
+	device.Tasks = []string{"挂机", "挂机", "金砖", "Over"}
 	device.Mark = strconv.FormatInt(time.Now().Unix(), 10)
 	device.HotJob = "NULL"
 	device.IncAllGold = 0
