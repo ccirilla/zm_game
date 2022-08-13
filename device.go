@@ -118,11 +118,11 @@ func GetDidDevices(did int) Device{
 
 func SetAllDevices(op string, param []string) {
 	m_device.Lock()
-	for _, val := range devices{
+	for i := 0; i < len(devices); i++{
 		if op == "task"{
-			val.Tasks = param
+			devices[i].Tasks = param
 		}else if op == "hot"{
-			val.HotJob = param[0]
+			devices[i].HotJob = param[0]
 		}
 	}
 	m_device.Unlock()
@@ -130,14 +130,14 @@ func SetAllDevices(op string, param []string) {
 
 func SetHostDevices(host string, op string, param []string) {
 	m_device.Lock()
-	for _, val := range devices{
-		if val.Host != host {
+	for i := 0; i < len(devices); i++{
+		if devices[i].Host != host {
 			continue
 		}
 		if op == "task"{
-			val.Tasks = param
+			devices[i].Tasks = param
 		}else if op == "hot"{
-			val.HotJob = param[0]
+			devices[i].HotJob = param[0]
 		}
 	}
 	m_device.Unlock()
