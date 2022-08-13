@@ -14,8 +14,6 @@ func init() {
 	InitALlDevice()
 }
 
-
-
 func main() {
 
 	router := gin.Default()
@@ -78,9 +76,9 @@ func GetDevice(c *gin.Context) {
 	params := strings.Split(param, "-")
 	var data interface{}
 
-	if params[0] == "host"{
+	if params[0] == "host" {
 		data = GetAllDevices(params[1])
-	}else if params[0] == "did" {
+	} else if params[0] == "did" {
 		did, _ := strconv.Atoi(params[1])
 		data = GetDidDevices(did)
 	}
@@ -95,12 +93,12 @@ func SetDevice(c *gin.Context) {
 	params := strings.Split(param, "-")
 	vals := append(params[2:], "Over")
 
-	if params[1] == "host"{
+	if params[1] == "host" {
 		SetHostDevices(params[1], params[0], vals)
-	}else if params[1] == "did" {
+	} else if params[1] == "did" {
 		did, _ := strconv.Atoi(params[1])
 		SetDidDevices(did, params[0], vals)
-	}else if params[1] == "all" {
+	} else if params[1] == "all" {
 		SetAllDevices(params[0], vals)
 	}
 	c.JSON(200, gin.H{

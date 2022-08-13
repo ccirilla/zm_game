@@ -16,12 +16,12 @@ type Level1Step struct {
 }
 
 type Level2Step struct {
-	CurIndex   int `json:"CurIndex"`
-	FinishSum int    `json:"FinishSum"`
-	RoleLevel int    `json:"RoleLevel"`
-	IncGold   int    `json:"IncGold"`
-	IncMoney  int    `json:"IncMoney"`
-	IncEx     int    `json:"IncEx"`
+	CurIndex  int `json:"CurIndex"`
+	FinishSum int `json:"FinishSum"`
+	RoleLevel int `json:"RoleLevel"`
+	IncGold   int `json:"IncGold"`
+	IncMoney  int `json:"IncMoney"`
+	IncEx     int `json:"IncEx"`
 }
 
 type Device struct {
@@ -38,20 +38,20 @@ type Device struct {
 	LastActive  int        `json:"LastActive"`
 }
 
-func CopyData(old *Device, new *Device){
+func CopyData(old *Device, new *Device) {
 	*old = *new
 	/*
-	old.IncAllMoney = new.IncAllMoney
-	old.IncAllGold = new.IncAllGold
-	old.HotJob = new.HotJob
-	old.Level1Step = new.Level1Step
-	old.Level2Step = new.Level2Step
-	*
-	 */
+		old.IncAllMoney = new.IncAllMoney
+		old.IncAllGold = new.IncAllGold
+		old.HotJob = new.HotJob
+		old.Level1Step = new.Level1Step
+		old.Level2Step = new.Level2Step
+		*
+	*/
 }
 
 func UpdateDeviceInfo(device *Device) *Device {
-	if device.Did >= DeviceNum{
+	if device.Did >= DeviceNum {
 		return nil
 	}
 	m_device.Lock()
@@ -59,7 +59,7 @@ func UpdateDeviceInfo(device *Device) *Device {
 	sys_device := devices[device.Did]
 	m_device.Unlock()
 
-	if device.Mark != sys_device.Mark{
+	if device.Mark != sys_device.Mark {
 		return &sys_device
 	}
 	m_device.Lock()
@@ -68,20 +68,20 @@ func UpdateDeviceInfo(device *Device) *Device {
 	return nil
 }
 
-func GetHealthInfo() map[string]interface{}{
+func GetHealthInfo() map[string]interface{} {
 	var up_cnt = 0
 	var down_cnt = 0
 	var t = time.Now().Unix()
 	farr := []map[string]int{}
 	m_device.Lock()
-	for _, val := range devices{
-		if val.LastActive == 0 || t - int64(val.LastActive) < int64(ActiveOverTime){
-			up_cnt++;
-		}else{
-			down_cnt++;
+	for _, val := range devices {
+		if val.LastActive == 0 || t-int64(val.LastActive) < int64(ActiveOverTime) {
+			up_cnt++
+		} else {
+			down_cnt++
 			tmp := map[string]int{
-				"Did" : val.Did,
-				"OverTime" : (int(t) - val.LastActive) / 60,
+				"Did":      val.Did,
+				"OverTime": (int(t) - val.LastActive) / 60,
 			}
 			farr = append(farr, tmp)
 		}
@@ -94,11 +94,11 @@ func GetHealthInfo() map[string]interface{}{
 	return ret
 }
 
-func GetAllDevices(host string) []Device{
+func GetAllDevices(host string) []Device {
 	ret := []Device{}
 	m_device.Lock()
-	for _, val := range devices{
-		if val.Host == host{
+	for _, val := range devices {
+		if val.Host == host {
 			ret = append(ret, val)
 		}
 	}
@@ -106,8 +106,8 @@ func GetAllDevices(host string) []Device{
 	return ret
 }
 
-func GetDidDevices(did int) Device{
-	if did > DeviceNum{
+func GetDidDevices(did int) Device {
+	if did > DeviceNum {
 		return Device{}
 	}
 	m_device.Lock()
@@ -118,11 +118,13 @@ func GetDidDevices(did int) Device{
 
 func SetAllDevices(op string, param []string) {
 	m_device.Lock()
-	for i := 0; i < len(devices); i++{
-		if op == "task"{
+	for i := 0; i < len(devices); i++ {
+		if op == "task" {
 			devices[i].Tasks = param
-		}else if op == "hot"{
+			devices[i].Mark = strconv.FormatInt(time.Now().Unix(), 10)
+		} else if op == "hot" {
 			devices[i].HotJob = param[0]
+			devices[i].Mark = strconv.FormatInt(time.Now().Unix(), 10)
 		}
 	}
 	m_device.Unlock()
@@ -130,30 +132,34 @@ func SetAllDevices(op string, param []string) {
 
 func SetHostDevices(host string, op string, param []string) {
 	m_device.Lock()
-	for i := 0; i < len(devices); i++{
+	for i := 0; i < len(devices); i++ {
 		if devices[i].Host != host {
 			continue
 		}
-		if op == "task"{
+		if op == "task" {
 			devices[i].Tasks = param
-		}else if op == "hot"{
+			devices[i].Mark = strconv.FormatInt(time.Now().Unix(), 10)
+		} else if op == "hot" {
 			devices[i].HotJob = param[0]
+			devices[i].Mark = strconv.FormatInt(time.Now().Unix(), 10)
 		}
 	}
 	m_device.Unlock()
 }
 
 func SetDidDevices(did int, op string, param []string) {
-	if did > DeviceNum{
+	if did > DeviceNum {
 		return
 	}
 	m_device.Lock()
 
-		if op == "task"{
-			devices[did].Tasks = param
-		}else if op == "hot" {
-			devices[did].HotJob = param[0]
-		}
+	if op == "task" {
+		devices[did].Tasks = param
+		devices[did].Mark = strconv.FormatInt(time.Now().Unix(), 10)
+	} else if op == "hot" {
+		devices[did].HotJob = param[0]
+		devices[did].Mark = strconv.FormatInt(time.Now().Unix(), 10)
+	}
 	m_device.Unlock()
 }
 
@@ -179,7 +185,7 @@ func InitDevice(device *Device) {
 }
 
 func InitDevices(devices []Device) {
-	for i := 0; i < DeviceNum; i++{
+	for i := 0; i < DeviceNum; i++ {
 		InitDevice(&devices[i])
 		devices[i].Did = i
 	}

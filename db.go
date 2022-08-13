@@ -67,7 +67,6 @@ func initLog() {
 	ELogger = log.New(efile, "", log.Ldate|log.Ltime)
 }
 
-
 func InitRoleInfo() {
 	base_db.Limit(AccountsNum).Find(&roles)
 }
