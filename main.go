@@ -20,6 +20,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/GetAccount", GetAccount)
 	router.GET("/ReportHeart", ReportHeart)
+	router.GET("/ReportTaskMessage", ReportTaskMessage)
 	router.GET("/GetHealth", GetHealth)
 	router.GET("/GetDevice", GetDevice)
 	router.GET("/SetDevice", SetDevice)
@@ -60,6 +61,16 @@ func ReportHeart(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"Status": "Update",
 		"Data":   data,
+	})
+}
+
+func ReportTaskMessage(c *gin.Context) {
+	param := c.Query("data")
+	var val = TaskMessage{}
+	json.Unmarshal([]byte(param), &val)
+	RecordTaskLog(&val)
+	c.JSON(200, gin.H{
+		"Status": "OK",
 	})
 }
 

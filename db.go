@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -23,6 +24,17 @@ type RoleBaseInfoXc struct {
 	CreateTime time.Time
 }
 
+type ErrorInfo struct{
+	Func string `json:"Func"`
+	Scene string `json:"Scene"`
+}
+
+type TaskMessage struct {
+	RetType string `json:"RetType"`
+	ErrInfo ErrorInfo  `json:"ErrInfo"`
+	Task Device `json:"Task"`
+}
+
 func GetAccountInfo(did int) []map[string]string {
 	data := make([]map[string]string, EveryDidNum)
 	index := did * EveryDidNum
@@ -36,6 +48,21 @@ func GetAccountInfo(did int) []map[string]string {
 	}
 	m_role.Unlock()
 	return data
+}
+
+func RecordTaskLog(data *TaskMessage){
+	s:= fmt.Sprintf("Type: %s Did: %d Task %s SubIndex: %d State: %s UseTime: %d  HotJob: %s " +
+						"CurIndex: %d FinishSum: %d IncMoney: %d IncGold:%d IncEx: %d",
+					data.RetType, data.Task.Did, data.Task.Tasks[data.Task.Level1Step.CurIndex], data.Task.Level1Step.SubIndex,
+					data.Task.State, data.Task.Level1Step.UsedTime, data.Task.HotJob,
+					data.Task.Level2Step.CurIndex, data.Task.Level2Step.FinishSum, data.Task.Level2Step.IncMoney,
+					data.Task.Level2Step.IncGold, data.Task.Level2Step.IncEx)
+	if data.RetType == "Done" || data.RetType == "HotDone"{
+		SLogger.Println(s)
+		//记录数据库
+	}else {
+		FLogger.Println(s)
+	}
 }
 
 var base_db *gorm.DB

@@ -75,7 +75,7 @@ func GetHealthInfo() map[string]interface{} {
 	farr := []map[string]int{}
 	m_device.Lock()
 	for _, val := range devices {
-		if val.LastActive == 0 || t-int64(val.LastActive) < int64(ActiveOverTime) {
+		if t - int64(val.LastActive) < int64(ActiveOverTime) {
 			up_cnt++
 		} else {
 			down_cnt++
@@ -200,7 +200,7 @@ func InitDevices(devices []Device) {
 }
 
 func InitALlDevice() {
-	devices = make([]Device, DeviceNum+1)
+	devices = make([]Device, DeviceNum)
 	InitDevices(devices)
 }
 
