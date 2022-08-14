@@ -51,10 +51,6 @@ func GetAccountInfo(did int) []map[string]string {
 }
 
 func RecordTaskLog(data *TaskMessage){
-	fmt.Printf("RecordTaskLog: +%v", *data)
-	fmt.Printf("RecordTaskLog: +%v", data.Task.Tasks)
-	fmt.Println(len(data.Task.Tasks))
-
 	s:= fmt.Sprintf("Type: %s Did: %d Task %s SubIndex: %d State: %s UseTime: %d  HotJob: %s " +
 						"CurIndex: %d FinishSum: %d IncMoney: %d IncGold:%d IncEx: %d",
 					data.RetType, data.Task.Did, data.Task.Tasks[data.Task.Level1Step.CurIndex], data.Task.Level1Step.SubIndex,

@@ -44,7 +44,6 @@ func ReportInfo(c *gin.Context) {
 	param := c.Query("data")
 	//println(param)
 	json.Unmarshal([]byte(param), &val)
-	//fmt.Printf("%+v", val)
 
 	UpdateTaskResult(&val)
 

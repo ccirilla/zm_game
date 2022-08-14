@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -67,10 +66,8 @@ func ReportHeart(c *gin.Context) {
 
 func ReportTaskMessage(c *gin.Context) {
 	param := c.Query("data")
-	fmt.Println(param)
 	var val = TaskMessage{}
 	json.Unmarshal([]byte(param), &val)
-	fmt.Printf("%+v", val)
 	RecordTaskLog(&val)
 	c.JSON(200, gin.H{
 		"Status": "OK",
