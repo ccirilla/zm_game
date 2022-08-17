@@ -30,7 +30,7 @@ func main() {
 			"message": "pong",
 		})
 	})
-	router.Run(":8001") // 监听并在 0.0.0.0:8080 上启动服务
+	router.Run(":8002") // 监听并在 0.0.0.0:8080 上启动服务
 }
 
 func GetAccount(c *gin.Context) {

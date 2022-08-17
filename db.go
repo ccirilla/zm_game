@@ -7,10 +7,10 @@ import (
 	"log"
 	"os"
 	"sync"
-	"time"
+	//"time"
 )
-
-type RoleBaseInfoXc struct {
+/*
+type RoleUsingInfoCb struct {
 	//Id int
 	Account    string `json:"account,omitempty"`
 	Password   string
@@ -21,12 +21,25 @@ type RoleBaseInfoXc struct {
 	Money      int
 	Atk        int
 	Def        int
-	CreateTime time.Time
+	UsedTime      int
+	IncEx     int
+	IncGold       int
+	IncMoney      int
+	FinishSum        int
+}*/
+type RoleUsingInfoCb struct {
+	Account    string `json:"account,omitempty"`
+	Password   string
+	RoleId     string
 }
 
 type ErrorInfo struct{
 	Func string `json:"Func"`
 	Scene string `json:"Scene"`
+	Account string `json:"Account"`
+	RestEx int `json:"RestEx"`
+	Gold int `json:"Gold"`
+	Money int `json:"Money"`
 }
 
 type TaskMessage struct {
@@ -52,21 +65,28 @@ func GetAccountInfo(did int) []map[string]string {
 
 func RecordTaskLog(data *TaskMessage){
 	s:= fmt.Sprintf("Type: %s Did: %d Task %s SubIndex: %d State: %s UseTime: %d  HotJob: %s " +
-						"CurIndex: %d FinishSum: %d IncMoney: %d IncGold:%d IncEx: %d",
+						"CurIndex: %d FinishSum: %d IncMoney: %d IncGold:%d IncEx: %d Func: %s Scene: %s",
 					data.RetType, data.Task.Did, data.Task.Tasks[data.Task.Level1Step.CurIndex], data.Task.Level1Step.SubIndex,
 					data.Task.State, data.Task.Level1Step.UsedTime, data.Task.HotJob,
 					data.Task.Level2Step.CurIndex, data.Task.Level2Step.FinishSum, data.Task.Level2Step.IncMoney,
-					data.Task.Level2Step.IncGold, data.Task.Level2Step.IncEx)
+					data.Task.Level2Step.IncGold, data.Task.Level2Step.IncEx, data.ErrInfo.Func, data.ErrInfo.Scene)
 	if data.RetType == "Done" || data.RetType == "HotDone"{
 		SLogger.Println(s)
 		//记录数据库
+		if data.Task.Tasks[data.Task.Level1Step.CurIndex] == "刷怪" || data.Task.Tasks[data.Task.Level1Step.CurIndex] == "金砖" {
+			m := RoleUsingInfoCb{}
+			base_db.Model(&m).Where("account = ?", data.ErrInfo.Account).Updates(map[string]interface{}{
+				"used_time":data.Task.Level1Step.UsedTime, "inc_ex":data.Task.Level2Step.IncEx, "inc_money":data.Task.Level2Step.IncMoney,
+				"inc_gold":data.Task.Level2Step.IncGold, "finish_sum":data.Task.Level2Step.FinishSum, "gold":data.ErrInfo.Gold,
+				"level":data.Task.Level2Step.RoleLevel, "rest_ex":data.ErrInfo.RestEx, "money":data.ErrInfo.Money})
+		}
 	}else {
 		FLogger.Println(s)
 	}
 }
 
 var base_db *gorm.DB
-var roles []RoleBaseInfoXc
+var roles []RoleUsingInfoCb
 var m_role sync.Mutex
 
 var (
